@@ -9,6 +9,16 @@ class Authentication {
         const base64 = btoa(redirectUrl);
         return new Promise((resolve, reject) => {
             let login;
+            const windowRefocusFunc = () => {
+                if (!login || document.hidden) {
+                    return;
+                }
+                login.focus();
+                if (document.hidden)
+                    return;
+                window.alert("Please navigate back to the login window.");
+            };
+            let windowRefocus;
 
             const handleMessageReciever = (event) => {
                 if (event.origin !== ProjectApi.OriginApiUrl) {
@@ -20,6 +30,7 @@ class Authentication {
                 }
 
                 const privateCode = data.pv;
+                document.removeEventListener("visibilitychange", windowRefocusFunc);
                 window.removeEventListener("message", handleMessageReciever);
                 login.close();
 
@@ -36,6 +47,7 @@ class Authentication {
                 "Scratch Authentication",
                 `scrollbars=yes,resizable=yes,status=no,location=yes,toolbar=no,menubar=no,width=1024,height=512,left=200,top=200`
             );
+            document.addEventListener("visibilitychange", windowRefocusFunc);
             if (!login) {
                 window.removeEventListener("message", handleMessageReciever);
                 reject("PopupBlocked");
