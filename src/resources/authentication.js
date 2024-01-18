@@ -10,7 +10,11 @@ class Authentication {
         return new Promise((resolve, reject) => {
             let login;
             const windowRefocusFunc = () => {
-                if (!login || document.hidden) {
+                if (!login) {
+                    document.removeEventListener("visibilitychange", windowRefocusFunc);
+                    return;
+                }
+                if (document.hidden) {
                     return;
                 }
                 login.focus();
