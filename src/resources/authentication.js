@@ -33,8 +33,7 @@ class Authentication {
 
             login = window.open(
                 `https://auth.itinerary.eu.org/auth/?redirect=${base64}&name=PenguinMod`,
-                "Scratch Authentication",
-                `scrollbars=yes,resizable=yes,status=no,location=yes,toolbar=no,menubar=no,width=1024,height=512,left=200,top=200`
+                "Scratch Authentication"
             );
             if (!login) {
                 window.removeEventListener("message", handleMessageReciever);
